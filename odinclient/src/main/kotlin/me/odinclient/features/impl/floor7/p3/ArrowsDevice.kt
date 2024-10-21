@@ -84,7 +84,7 @@ object ArrowsDevice : Module(
 
     init {
         onMessage(
-            Regex("^Your (?:. )?Bonzo's Mask saved your life!$"), { enabled && auto && autoPhoenix && isPlayerOnStand }) {
+            Regex("^Your (?:. )?Bonzo's Mask saved your life!$"), { (enabled && autoPhoenix && isPlayerOnStand) || auto }) {
             phoenixSwap()
         }
 
@@ -294,7 +294,7 @@ object ArrowsDevice : Module(
 
         autoState = AutoState.Stopped
 
-        if (auto && autoLeap && (!autoLeapOnlyPre || !isDeviceRoomOpen)) leap()
+        if (auto || (autoLeap && (!autoLeapOnlyPre || !isDeviceRoomOpen))) leap()
     }
 
     @SubscribeEvent
