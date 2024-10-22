@@ -14,6 +14,7 @@ import me.odinmain.utils.render.RenderUtils.renderY
 import me.odinmain.utils.render.RenderUtils.renderZ
 import me.odinmain.utils.skyblock.dungeon.DungeonUtils
 import me.odinmain.utils.skyblock.isHolding
+import me.odinmain.utils.skyblock.isLeap
 import me.odinmain.utils.skyblock.isShortbow
 import net.minecraft.entity.Entity
 import net.minecraft.entity.boss.EntityWither
@@ -87,7 +88,7 @@ object Trajectories : Module(
         if (pearls) {
             pearlImpactPos = null
             val itemStack = mc.thePlayer?.heldItem ?: return
-            if (itemStack.item is ItemEnderPearl && !itemStack.displayName.contains("leap", ignoreCase = true)) {
+            if (itemStack.item is ItemEnderPearl && !itemStack.isLeap) {
                 val pair = setPearlTrajectoryHeading()
                 if (boxes) drawPearlCollisionBox()
                 if (lines) Renderer.draw3DLine(pair.first, color = color, lineWidth = width, depth = true)
@@ -179,7 +180,7 @@ object Trajectories : Module(
                 .offset(posVec.xCoord, posVec.yCoord, posVec.zCoord)
                 .addCoord(motionVec.xCoord, motionVec.yCoord, motionVec.zCoord)
                 .expand(0.01, 0.01, 0.01)
-            val entityHit = mc.theWorld?.getEntitiesWithinAABBExcludingEntity(mc.thePlayer, aabb)?.filter { it !is EntityArrow && it !is EntityArmorStand } ?: emptyList()
+            val entityHit = mc.theWorld?.getEntitiesWithinAABBExcludingEntity(mc.thePlayer, aabb)?.filter { it !is EntityArrow && it !is EntityArmorStand }.orEmpty()
             if (entityHit.isNotEmpty()) {
                 hitResult = true
                 entityRenderQueue.addAll(entityHit)

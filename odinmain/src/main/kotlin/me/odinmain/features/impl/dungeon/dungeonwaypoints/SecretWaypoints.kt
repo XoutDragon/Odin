@@ -2,10 +2,10 @@ package me.odinmain.features.impl.dungeon.dungeonwaypoints
 
 import me.odinmain.config.DungeonWaypointConfig
 import me.odinmain.events.impl.SecretPickupEvent
-import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.WaypointType
-import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.TimerType
-import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.getWaypoints
 import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.DungeonWaypoint
+import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.TimerType
+import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.WaypointType
+import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.getWaypoints
 import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.glList
 import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.lastEtherPos
 import me.odinmain.features.impl.dungeon.dungeonwaypoints.DungeonWaypoints.lastEtherTime
@@ -31,8 +31,7 @@ object SecretWaypoints {
 
     fun onLocked() {
         val room = DungeonUtils.currentFullRoom ?: return
-        val vec = room.getRelativeCoords(lastClicked?.toVec3() ?: return)
-        getWaypoints(room).find { wp -> wp.toVec3().equal(vec) && wp.secret && wp.clicked }?.let {
+        getWaypoints(room).find { wp -> wp.toVec3().equal(room.getRelativeCoords(lastClicked?.toVec3() ?: return)) && wp.secret && wp.clicked }?.let {
             it.clicked = false
             setWaypoints(room)
             devMessage("unclicked ${it.toVec3()}")
